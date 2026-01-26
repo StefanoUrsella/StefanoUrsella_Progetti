@@ -1,0 +1,26 @@
+body{
+    background-color: black;
+}
+
+.titolo{
+    color: white;
+}
+
+.scritta{
+    color: white;
+}
+
+.buttonRissa{
+    background-color: red;
+    color: black;
+    padding: 10px;
+}
+
+.paragrafo{
+    color: white;
+}
+
+.inputStat{
+    background-color: white;
+    color: black;
+}
