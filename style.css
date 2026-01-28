@@ -24,3 +24,43 @@ body{
     background-color: white;
     color: black;
 }
+
+
+
+
+
+
+#contenitoreDadi {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.dadoAttacco {
+    width: 60px;
+    height: 60px;
+    background: rgb(247, 5, 5);
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.dadoDifesa {
+    width: 60px;
+    height: 60px;
+    background: rgb(5, 9, 247);
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
