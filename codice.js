@@ -91,7 +91,7 @@ class Codice{
         this.stampareInput(this.truppa2);
         this.truppa1.aggiornareMorale();
         this.truppa2.aggiornareMorale();
-        lanciaDadi(5);
+        lanciaDadi(10);
     }
 
     stampareInput(truppa){
@@ -130,7 +130,7 @@ function lanciaDadi(numeroDadi, durataAnimazione = 1000, durataVisibile = 2000) 
 
     // 3. Stop animazione dopo X ms
     setTimeout(() => {
-        intervalli.forEach(interval => clearInterval(interval));
+        intervalli.forEach(interval => clearInterval(interval));// passa ogni "interval" (ID per i dadi) contenuto in "intervalli"-->lo passa a "clearInterval"-->cancella il timer
 
         // Risultato finale
         dadi.forEach(dado => {
@@ -139,8 +139,8 @@ function lanciaDadi(numeroDadi, durataAnimazione = 1000, durataVisibile = 2000) 
 
         // 4. Scomparsa dopo Y ms
         setTimeout(() => {
-            contenitoreDadi.innerHTML = "";
-        }, durataVisibile);
+            contenitoreDadi.innerHTML = ""; //cancella il contenuto di "contenitoreDadi"
+        }, durataVisibile); // quando scatta questo tempo-->i si fa il "setTimeout()"-->i dadi vengono cancellati
 
-    }, durataAnimazione);
+    }, durataAnimazione);// quando scatta questo tempo-->i si fa il "setTimeout()"-->ferma l'animazione
 }

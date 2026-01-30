@@ -31,12 +31,17 @@ body{
 
 
 #contenitoreDadi {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
+    /*position: fixed;*/
+    bottom: 20px;   
+    left: 50%;/*posizione a metà schermo orizzontale*/
     transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
+    
+    display: flex;/*così si affiancano invece che sovrapporsi*/
+    flex-wrap: wrap;/*va a capo se esce dalla width*/
+    width: 350px;/*larghezza dopo la quale va a capo*/
+    justify-content: center;/*quando va a capo, va a centro*/
+
+    gap: 10px;/*spazio tra un dad e l'altro*/
 }
 
 .dadoAttacco {
