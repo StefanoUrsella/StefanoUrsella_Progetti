@@ -27,21 +27,44 @@ body{
 
 
 
-
-
-
-#contenitoreDadi {
-    /*position: fixed;*/
-    bottom: 20px;   
+#gruppoCombattimenti {
+    position: fixed;
+    top: 200px;/*altezza del blocco*/
     left: 50%;/*posizione a metà schermo orizzontale*/
     transform: translateX(-50%);
+    z-index: 10000;/*così è sopra a tutto e nulla lo copre*/
+
+    display: flex;/*affianca le zone di lancio*/
+    gap: 100px;/*distanza tra le zone di lancio*/
+}
+
+.zonaLancio {    
+    display: flex;
+    flex-direction: column;/*mette i contenitori uno sotto l'altro*/
+    align-items: center;/*allinea i contenitori al centro*/
+    gap: 20px;/*spaizo tra il contenitore attacco e difesa*/
+}
+
+.contenitoreDadiAttacco {
+    position: relative;
+    /*bottom: 20px;
+    top: 200px;
+    left: 50%;/*posizione a metà schermo orizzontale
+    transform: translateX(-50%);*/
     
     display: flex;/*così si affiancano invece che sovrapporsi*/
     flex-wrap: wrap;/*va a capo se esce dalla width*/
     width: 350px;/*larghezza dopo la quale va a capo*/
-    justify-content: center;/*quando va a capo, va a centro*/
+    justify-content: center;/*quando va a capo-->si allinea al centro*/
 
-    gap: 10px;/*spazio tra un dad e l'altro*/
+    gap: 10px;/*spazio tra un dado e l'altro*/
+
+    background-color: rgba(255, 0, 0, 0.1);/*sfondo per contenere i dadi*/
+    border: 3px solid rgb(138, 0, 0);/*Contorno del Rettangolo*/
+    border-radius: 15px;/*per arrotondare gli angoli*/
+    padding: 20px;/*spazio tra i dadi e il bordo del rettangolo*/
+    box-shadow: 0 0 15px rgba(250, 78, 78, 0.5); /*effetto "balgiore/ombra" esterno*/
+    min-height: 80px;/*altezza minima del rettangolo se non ci sono dadi dentro*/
 }
 
 .dadoAttacco {
@@ -57,6 +80,24 @@ body{
     font-weight: bold;
 }
 
+.contenitoreDadiDifesa {
+    position: relative;
+    
+    display: flex;/*così si affiancano invece che sovrapporsi*/
+    flex-wrap: wrap;/*va a capo se esce dalla width*/
+    width: 350px;/*larghezza dopo la quale va a capo*/
+    justify-content: center;/*quando va a capo-->si allinea al centro*/
+
+    gap: 10px;/*spazio tra un dado e l'altro*/
+
+    background-color: rgba(17, 0, 255, 0.1);/*sfondo per contenere i dadi*/
+    border: 3px solid rgb(0, 60, 138);/*Contorno del Rettangolo*/
+    border-radius: 15px;/*per arrotondare gli angoli*/
+    padding: 20px;/*spazio tra i dadi e il bordo del rettangolo*/
+    box-shadow: 0 0 15px rgba(78, 124, 250, 0.5); /*effetto "balgiore/ombra" esterno*/
+    min-height: 80px;/*altezza minima del rettangolo se non ci sono dadi dentro*/
+}
+
 .dadoDifesa {
     width: 60px;
     height: 60px;
@@ -68,4 +109,80 @@ body{
     justify-content: center;
     align-items: center;
     font-weight: bold;
+}
+
+
+
+/* Stile comune per le etichette che sporgono */
+/*per quelle a sinistra*/
+.etichetta-testoS {
+    position: absolute;
+    top: 10px;           /* Distanza dall'alto */
+    left: -80px;         /* Lo fa uscire verso SINISTRA di 80px */
+    width: 70px;         /* Larghezza della sporgenza */
+    height: 40px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 8px 0 0 8px; /* Arrotonda solo i bordi esterni */
+    margin: 0;           /* Rimuove i margini di default del <p> */
+}
+
+/*per quelle a destra*/
+.etichetta-testoD {
+    position: absolute;
+    top: 10px;           /* Distanza dall'alto */
+    right: -80px;         /* Lo fa uscire verso DESTRA di 80px */
+    width: 70px;         /* Larghezza della sporgenza */
+    height: 40px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 0 8px 8px 0; /* Arrotonda solo i bordi esterni */
+    margin: 0;           /* Rimuove i margini di default del <p> */
+}
+
+
+/* Colore specifico per l'etichetta Attacco Sinistra */
+.contenitoreDadiAttacco .etichetta-testoS {
+    background-color: rgb(138, 0, 0);
+    border: 2px solid red;
+    border-right: none;
+}
+
+/* Colore specifico per l'etichetta Attacco Destra */
+.contenitoreDadiAttacco .etichetta-testoD {
+    background-color: rgb(138, 0, 0);
+    border: 2px solid red;
+    border-left: none;
+}
+
+/* Colore specifico per l'etichetta Difesa Sinistra */
+.contenitoreDadiDifesa .etichetta-testoS {
+    background-color: rgb(0, 60, 138);
+    border: 2px solid blue;
+    border-left: none;
+}
+
+/* Colore specifico per l'etichetta Difesa Destra */
+.contenitoreDadiDifesa .etichetta-testoD {
+    background-color: rgb(0, 60, 138);
+    border: 2px solid blue;
+    border-left: none;
+}
+
+/* Assicuriamoci che i contenitori abbiano overflow visibile */
+.contenitoreDadiAttacco, .contenitoreDadiDifesa {
+    position: relative; /* Indispensabile per posizionare l'etichetta rispetto al box */
+    overflow: visible;  /* Permette alla linguetta di "uscire" dai bordi */
 }

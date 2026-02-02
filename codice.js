@@ -91,7 +91,22 @@ class Codice{
         this.stampareInput(this.truppa2);
         this.truppa1.aggiornareMorale();
         this.truppa2.aggiornareMorale();
-        lanciaDadi(10);
+        this.modificatoreAttacco1 = document.getElementById("modificatoreAttacco1");
+        this.modificatoreDifesa1 = document.getElementById("modificatoreDifesa1");
+        
+        this.modificatoreAttacco2 = document.getElementById("modificatoreAttacco2");
+        this.modificatoreDifesa2 = document.getElementById("modificatoreDifesa2");
+
+        this.modificatoreAttacco1.textContent = this.truppa1.inputATTACCO.value;
+        this.modificatoreDifesa1.textContent = this.truppa2.inputDIFESA.value;
+
+        this.modificatoreAttacco2.textContent = this.truppa2.inputATTACCO.value;
+        this.modificatoreDifesa2.textContent = this.truppa1.inputDIFESA.value;
+
+        lanciaDadi((Number(this.truppa1.inputTRUPPE.value)*Number(this.truppa1.inputATTACCHI.value)), "attacco1");
+        lanciaDadi((Number(this.truppa1.inputTRUPPE.value)*Number(this.truppa1.inputATTACCHI.value)), "difesa1");
+        lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "attacco2");
+        lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "difesa2");
     }
 
     stampareInput(truppa){
@@ -106,16 +121,36 @@ const codice = new Codice();
 
 
 //DADI
-function lanciaDadi(numeroDadi, durataAnimazione = 1000, durataVisibile = 2000) {
-    const contenitoreDadi = document.getElementById("contenitoreDadi");
-    contenitoreDadi.innerHTML = ""; //cancella il contenuto di "contenitoreDadi"
+function lanciaDadi(numeroDadi, tipoDadi) {
+    durataAnimazione = 1000;
+    durataVisibile = 2000;
+    
+    let contenitoreDadi;
+
+    if(tipoDadi == "attacco1"){
+        contenitoreDadi = document.getElementById("contenitoreDadiAttacco1");
+    }else if(tipoDadi == "difesa1"){
+        contenitoreDadi = document.getElementById("contenitoreDadiDifesa1");
+    }else if(tipoDadi == "attacco2"){
+        contenitoreDadi = document.getElementById("contenitoreDadiAttacco2");
+    }else if(tipoDadi == "difesa2"){
+        contenitoreDadi = document.getElementById("contenitoreDadiDifesa2");
+    }
+    
+    const vecchiDadi = contenitoreDadi.querySelectorAll('.dadoAttacco, .dadoDifesa');/*prendi tutti i dadi vecchi*/
+    vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
 
     const dadi = [];
 
     // 1. Creazione dei dadi
     for (let i = 0; i < numeroDadi; i++) {
         const dado = document.createElement("div"); //"dado" è un nuovo elemento "generico" (è un "div")
-        dado.classList.add("dadoAttacco"); //li dico che classe CSS deve usare il dado
+        if(tipoDadi == "attacco1" || tipoDadi == "attacco2"){
+            dado.classList.add("dadoAttacco"); //li dico che classe CSS deve usare il dado
+        }else if(tipoDadi == "difesa1" || tipoDadi == "difesa2"){
+            dado.classList.add("dadoDifesa"); //li dico che classe CSS deve usare il dado
+        }
+        
         dado.textContent = "-";
         contenitoreDadi.appendChild(dado);
         dadi.push(dado);//aggiungo i "dado" alla lista di "dadi"
@@ -139,7 +174,8 @@ function lanciaDadi(numeroDadi, durataAnimazione = 1000, durataVisibile = 2000) 
 
         // 4. Scomparsa dopo Y ms
         setTimeout(() => {
-            contenitoreDadi.innerHTML = ""; //cancella il contenuto di "contenitoreDadi"
+            const vecchiDadi = contenitoreDadi.querySelectorAll('.dadoAttacco, .dadoDifesa');/*prendi tutti i dadi vecchi*/
+            vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
         }, durataVisibile); // quando scatta questo tempo-->i si fa il "setTimeout()"-->i dadi vengono cancellati
 
     }, durataAnimazione);// quando scatta questo tempo-->i si fa il "setTimeout()"-->ferma l'animazione
