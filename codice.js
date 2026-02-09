@@ -118,6 +118,10 @@ class Codice{
         this.lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "attacco2");
         this.lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "difesa2");
 
+        console.log(this.tiriAttacco1);
+        console.log(this.tiriDifesa1);
+        console.log(this.tiriAttacco2);
+        console.log(this.tiriDifesa2);
     }
 
     aggiornareListeDadi(risultatoDado, tipoDadi){
@@ -136,21 +140,42 @@ class Codice{
         }else if(tipoDadi == "difesa2"){
             this.tiriDifesa2.push(risultatoDado+Number(this.modificatoreDifesa1.textContent));
             this.tiriDifesa2 = this.ordinareListeBoubleSort(this.tiriDifesa2);
+
         }
     }
 
     ordinareListeBoubleSort(tiri){
-        for(let i=0; i<this.tiri.length; i++){
-            for(j=0; j<this.tiri.length-this.i-1; j++){
-                if(this.tiri[j]>this.tiri[j+1]){
-                    var valoreTemporaneo = this.tiri[j+1];
-                    this.tiri[j+1] = this.tiri[j];
-                    this.tiri[j] = valoreTemporaneo;
+        for(let i=0; i<tiri.length; i++){
+            for(let j=0; j<tiri.length-i-1; j++){
+                if(tiri[j]<tiri[j+1]){
+                    let valoreTemporaneo = tiri[j+1];
+                    tiri[j+1] = tiri[j];
+                    tiri[j] = valoreTemporaneo;
                 }
             }
         }
 
-        return this.tiri;
+        return tiri;
+    }
+
+    modificareListeTiri(tiri, tipoDadi){
+        let modificatore;
+        if(tipoDadi == "attacco1"){
+            modificatore = this.modificatoreAttacco1.value;
+        }else if(tipoDadi == "difesa1"){
+            modificatore = this.modificatoreDifesa1.value;
+        }else if(tipo == "attacco2"){
+            modificatore = this.modificatoreAttacco2.value;
+        }else if(tipo == "difesa2"){
+            modificatore = this.modificatoreDifesa2.value;
+        }
+
+        for(let i=0; i<tiri.length; i++){
+            tiri[i] = tiri[i]+modificatore;
+        }
+
+        console.log(tiri);
+        return tiri;
     }
 
     stampareInput(truppa){
