@@ -107,7 +107,7 @@ class Codice{
 
         this.modificatoreAttacco2.textContent = this.truppa2.inputATTACCO.value;
         this.modificatoreDifesa2.textContent = this.truppa1.inputDIFESA.value;
-
+ 
         this.tiriAttacco1 = [];
         this.tiriDifesa1 = [];
         this.tiriAttacco2 = [];
@@ -122,6 +122,18 @@ class Codice{
         console.log(this.tiriDifesa1);
         console.log(this.tiriAttacco2);
         console.log(this.tiriDifesa2);
+
+        
+    }
+
+    calcolareDanni(attacco, difesa, danno){
+        let danniInflitti = 0;
+           for(let i=0; i<attacco.length; i++){
+            if(attacco[i]>difesa[i]){
+                danniInflitti += danno;
+            }
+        }
+        return danniInflitti;
     }
 
     aggiornareListeDadi(risultatoDado, tipoDadi){
