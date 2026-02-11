@@ -1,6 +1,7 @@
 class Truppa{
 
     truppaFazione;
+    vitaPrimaUnita;
 
     constructor(truppaFazione){
         this.truppaFazione = truppaFazione;
@@ -20,6 +21,7 @@ class Truppa{
             this.inputTREUPPEINIZIALI = document.getElementById("inputTruppeIniziali1");
             this.inputTRUPPE = document.getElementById("inputTRUPPE1");
             this.displayMORALERIMASTO = document.getElementById("moraleRimasto1");
+            this.displayVITARIMASTA = document.getElementById("vitaComplessiva1");
         }else if(truppaFazione == 2){
             this.inputHP = document.getElementById("inputHP2");
             this.inputDANNO = document.getElementById("inputDANNO2");
@@ -30,7 +32,17 @@ class Truppa{
             this.inputTREUPPEINIZIALI = document.getElementById("inputTruppeIniziali2");
             this.inputTRUPPE = document.getElementById("inputTRUPPE2");
             this.displayMORALERIMASTO = document.getElementById("moraleRimasto2");
+            this.displayVITARIMASTA = document.getElementById("vitaComplessiva2");
         }
+
+        // 1. Inizializziamo la vita attuale al valore dell'input (appena carica la pagina)
+        this.vitaPrimaUnita = Number(this.inputHP.value);
+
+        // 2. AGGIUNGIAMO QUESTO: Se l'utente cambia manualmente l'input HP, resettiamo la vita
+        this.inputHP.addEventListener("change", () => {
+            this.vitaPrimaUnita = Number(this.inputHP.value);
+            console.log("Nuova vita massima impostata: " + this.vitaPrimaUnita);
+        });
     }
 
     aggiornareMorale(){
@@ -123,17 +135,35 @@ class Codice{
         console.log(this.tiriAttacco2);
         console.log(this.tiriDifesa2);
 
-        
+
+        // ASPETTA 1.5 SECONDI (1500ms) PRIMA DI CALCOLARE I DANNI
+        setTimeout(() => {
+            console.log("--- INIZIO CALCOLO DANNI ---");
+            this.calcolareDanni(this.tiriAttacco1, this.tiriDifesa2, Number(this.truppa1.inputDANNO.value), this.truppa2);
+            this.calcolareDanni(this.tiriAttacco2, this.tiriDifesa1, Number(this.truppa2.inputDANNO.value), this.truppa1);
+            
+            // Aggiorna anche il morale alla fine
+            this.truppa1.aggiornareMorale();
+            this.truppa2.aggiornareMorale();
+        }, 1500);
+
     }
 
-    calcolareDanni(attacco, difesa, danno){
-        let danniInflitti = 0;
+    calcolareDanni(attacco, difesa, danno, bersaglio){
+        //let danniInflitti = 0;
            for(let i=0; i<attacco.length; i++){
             if(attacco[i]>difesa[i]){
-                danniInflitti += danno;
+                //danniInflitti += danno;
+                let valoreTemporaneo1 = bersaglio.vitaPrimaUnita - danno;
+                bersaglio.vitaPrimaUnita = valoreTemporaneo1;
+                if(bersaglio.vitaPrimaUnita <= 0){
+                    let truppeRimaste = Number(bersaglio.inputTRUPPE.value) -1 ;
+                    bersaglio.inputTRUPPE.value = truppeRimaste;
+                    bersaglio.vitaPrimaUnita = Number(bersaglio.inputHP.value);
+                }
             }
         }
-        return danniInflitti;
+        //return danniInflitti;
     }
 
     aggiornareListeDadi(risultatoDado, tipoDadi){
@@ -167,26 +197,6 @@ class Codice{
             }
         }
 
-        return tiri;
-    }
-
-    modificareListeTiri(tiri, tipoDadi){
-        let modificatore;
-        if(tipoDadi == "attacco1"){
-            modificatore = this.modificatoreAttacco1.value;
-        }else if(tipoDadi == "difesa1"){
-            modificatore = this.modificatoreDifesa1.value;
-        }else if(tipo == "attacco2"){
-            modificatore = this.modificatoreAttacco2.value;
-        }else if(tipo == "difesa2"){
-            modificatore = this.modificatoreDifesa2.value;
-        }
-
-        for(let i=0; i<tiri.length; i++){
-            tiri[i] = tiri[i]+modificatore;
-        }
-
-        console.log(tiri);
         return tiri;
     }
 
