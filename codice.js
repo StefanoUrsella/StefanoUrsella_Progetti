@@ -193,10 +193,10 @@ class Codice{
         this.tiriAttacco2 = [];
         this.tiriDifesa2 = [];
 
-        this.lanciaDadi(this.truppa1.truppe*this.truppa1.attacchi, "attacco1");
-        this.lanciaDadi(this.truppa1.truppe*this.truppa1.attacchi, "difesa1");
-        this.lanciaDadi(this.truppa2.truppe*this.truppa2.attacchi, "attacco2");
-        this.lanciaDadi(this.truppa2.truppe*this.truppa2.attacchi, "difesa2");
+        this.lanciaDadiCombattimento(this.truppa1.truppe*this.truppa1.attacchi, "attacco1");
+        this.lanciaDadiCombattimento(this.truppa1.truppe*this.truppa1.attacchi, "difesa1");
+        this.lanciaDadiCombattimento(this.truppa2.truppe*this.truppa2.attacchi, "attacco2");
+        this.lanciaDadiCombattimento(this.truppa2.truppe*this.truppa2.attacchi, "difesa2");
 
         console.log(this.tiriAttacco1);
         console.log(this.tiriDifesa1);
@@ -237,12 +237,12 @@ class Codice{
                 this.modificatoreMorale2.style.visibility = "hidden";
             }
 
-            this.scrivereCose(this.vincitoreScontro, this.danniInflitti1, this.danniInflitti2);
+            this.scrivereCoseScontro(this.vincitoreScontro, this.danniInflitti1, this.danniInflitti2);
         }, 2500);
 
     }
 
-    scrivereCose(vincitoreScontro, danni1, danni2){
+    scrivereCoseScontro(vincitoreScontro, danni1, danni2){
         this.testoDaScrivere = "1 ha inflitto: " + danni1 + " danni | 2 ha inflitto: " + danni2 + " danni";
         if(vincitoreScontro == 0){
             this.testoDaScrivere += " | pareggio";
@@ -256,7 +256,43 @@ class Codice{
     }
 
     onButtonMoraleClick(){
+        this.risultatoMorale = 0;
+        this.lanciaDadiMorale();
+        //aspettare 2.5 secondi prima di fare la roba (sennò rischia che le variabili non sono ancora aggiornate)
+        setTimeout(() => {
+            this.valoreMoraleControllare = 0;
+            if(this.vincitoreScontro == 1){
+                this.valoreMoraleControllare = this.truppa2.moraleRimasto;
+                this.scrivereCoseMorale(this.risultatoMorale, this.valoreMoraleControllare, 2);
 
+            }else if(this.vincitoreScontro == 2){
+                this.valoreMoraleControllare = this.truppa2.moraleRimasto;
+                this.scrivereCoseMorale(this.risultatoMorale, this.valoreMoraleControllare, 1);
+
+            }else if(this.vincitoreScontro == 0){
+                this.valoreMoraleControllare = 0;
+                this.scrivereCoseMorale(this.risultatoMorale, this.valoreMoraleControllare, 0);
+
+            }
+        }, 2500);
+    }
+
+    scrivereCoseMorale(moraleTirato, moraleControllare, perdente){
+        this.testoDaScrivere;
+
+        if(moraleTirato > moraleControllare && perdente == 1){
+            this.testoDaScrivere = "Le truppe di 1 vanno in rotta";
+        }else if(moraleTirato > moraleControllare && perdente == 2){
+            this.testoDaScrivere = "Le truppe di 2 vanno in rotta";
+        }else if(moraleTirato <= moraleControllare && perdente == 1){
+            this.testoDaScrivere = "Le truppe di 1 resistono e rimangono a combattere";
+        }else if(moraleTirato <= moraleControllare && perdente == 2){
+            this.testoDaScrivere = "Le truppe di 2 resistono e rimangono a combattere";
+        }else{
+            this.testoDaScrivere = "Nessuno mostra segni di cedimento";
+        }
+
+        this.boxRisultato.innerText = this.testoDaScrivere;
     }
 
     calcolareDanni(attacco, difesa, danno, bersaglio){
@@ -324,7 +360,7 @@ class Codice{
 
 
     //DADI
-    lanciaDadi(numeroDadi, tipoDadi) {
+    lanciaDadiCombattimento(numeroDadi, tipoDadi) {
         let durataAnimazione = 1000;
         //let durataVisibile = 90000;    (non voglio più che i dadi scompaiano)
         
@@ -382,6 +418,46 @@ class Codice{
             /*    vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
             /*}, durataVisibile); // quando scatta questo tempo-->i si fa il "setTimeout()"-->i dadi vengono cancellati
             */
+
+        }, durataAnimazione);// quando scatta questo tempo-->i si fa il "setTimeout()"-->ferma l'animazione
+    }
+
+
+    lanciaDadiMorale() {
+        let durataAnimazione = 1000;
+        
+        let contenitoreDadi;
+        contenitoreDadi = document.getElementById("contenitoreDadiMorale");
+        
+        const vecchiDadi = contenitoreDadi.querySelectorAll('.dadoMorale');/*prendi tutti i dadi vecchi*/
+        vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
+
+        const dadi = [];
+
+        // 1. Creazione dei dadi
+        const dado = document.createElement("div"); //"dado" è un nuovo elemento "generico" (è un "div")
+        dado.classList.add("dadoMorale"); //li dico che classe CSS deve usare il dado
+        
+        dado.textContent = "-";
+        contenitoreDadi.appendChild(dado);
+        dadi.push(dado);//aggiungo i "dado" alla lista di "dadi"
+
+        // 2. Animazione casuale veloce
+        const intervalli = dadi.map(dado => {//"intervalli" contiene tutti i "setInterval" di ogni dado             //"map" esegue un metodo su tutti gli elementi di un array
+            return setInterval(() => {//"setInterval" esegue una funzione ogni TOT tempo
+                dado.textContent = Math.floor(Math.random() * 10) + 1;
+            }, 50); //"50" è la velocità con cui viene iterato "setInterval"
+        });
+
+        // 3. Stop animazione dopo X ms
+        setTimeout(() => {
+            intervalli.forEach(interval => clearInterval(interval));// passa ogni "interval" (ID per i dadi) contenuto in "intervalli"-->lo passa a "clearInterval"-->cancella il timer
+
+            // Risultato finale
+            dadi.forEach(dado => {
+                dado.textContent = Math.floor(Math.random() * 10) + 1;
+                this.risultatoMorale = Number(dado.textContent);
+            });
 
         }, durataAnimazione);// quando scatta questo tempo-->i si fa il "setTimeout()"-->ferma l'animazione
     }
