@@ -6,6 +6,16 @@ class Truppa{
     constructor(truppaFazione){
         this.truppaFazione = truppaFazione;
 
+        this.hp = 2;
+        this.danno = 1;
+        this.difesa = 0;
+        this.attacco = 0;
+        this.attacchi = 1;
+        this.morale = 8;
+        this.truppeIniziali = 1;
+        this.truppe = 1;
+        this.moraleRimasto = 8;
+
         this.tiriAttacco1 = [];
         this.tiriDifesa1 = [];
         this.tiriAttacco2 = [];
@@ -35,61 +45,100 @@ class Truppa{
             this.displayVITARIMASTA = document.getElementById("vitaComplessiva2");
         }
 
+        this.inputHP.value = this.hp;
+        this.inputDANNO.value = this.danno;
+        this.inputDIFESA.value = this.difesa;
+        this.inputATTACCO.value = this.attacco;
+        this.inputATTACCHI.value = this.attacchi;
+        this.inputMORALE.value = this.morale;
+        this.inputTREUPPEINIZIALI.value = this.truppeIniziali;
+        this.inputTRUPPE.value = this.truppe;
+        this.displayMORALERIMASTO.textContent = this.moraleRimasto;
+
         // 1. Inizializziamo la vita attuale al valore dell'input (appena carica la pagina)
-        this.vitaPrimaUnita = Number(this.inputHP.value);
+        this.vitaPrimaUnita = this.hp;
 
         // 2. AGGIUNGIAMO QUESTO: Se l'utente cambia manualmente l'input HP, resettiamo la vita
-        this.inputHP.addEventListener("change", () => {
-            this.vitaPrimaUnita = Number(this.inputHP.value);
+        this.inputHP.addEventListener("change", (e) => {
+            this.hp = Number(e.target.value);
+            this.vitaPrimaUnita = this.hp;
             console.log("Nuova vita massima impostata: " + this.vitaPrimaUnita);
         });
+
+        //Aggiornare le variabili dai campi di testo
+        this.inputDANNO.addEventListener("change", (e) => this.danno = Number(e.target.value));
+        this.inputDIFESA.addEventListener("change", (e) => this.difesa = Number(e.target.value));
+        this.inputATTACCO.addEventListener("change", (e) => this.attacco = Number(e.target.value));
+        this.inputATTACCHI.addEventListener("change", (e) => this.attacchi = Number(e.target.value));
+        this.inputMORALE.addEventListener("change", (e) => this.morale = Number(e.target.value));
+        this.inputTREUPPEINIZIALI.addEventListener("change", (e) => this.truppeIniziali = Number(e.target.value));
+        this.inputTRUPPE.addEventListener("change", (e) => this.truppe = Number(e.target.value));
     }
 
     aggiornareMorale(){
         //this.moraleMassimo = Number(this.inputTREUPPEINIZIALI.value) * Number(this.inputMORALE.value);
-        this.displayMORALERIMASTO.textContent = Math.round(Number(this.inputMORALE.value) * Number(this.inputTRUPPE.value) / Number(this.inputTREUPPEINIZIALI.value));
+        this.moraleRimasto = Math.round(this.morale * this.truppe / this.truppeIniziali);
+        this.displayMORALERIMASTO.textContent = this.moraleRimasto;
     }
 
-    getHP(hp){
+    setHP(hp){
+        this.hp = hp;
         this.inputHP.value = hp;
     }
 
-    setHP(){
-        return this.inputHP.value;
+    getHP(){
+        return this.hp;
     }
 
-    getDANNO(danno){
+    setDANNO(danno){
+        this.danno = danno;
         this.inputDANNO.value = danno;
     }
 
-    setDANNO(){
-        return this.inputDANNO.value;
+    getDANNO(){
+        return this.danno;
     }
 
-    getDIFESA(difesa){
+    setDIFESA(difesa){
+        this.difesa = difesa;
         this.inputDIFESA.value = difesa;
     }
 
-    setDIFESA(){
-        return this.inputDIFESA.value;
+    getDIFESA(){
+        return this.difesa;
     }
 
-    getATTACCHI(attacchi){
+    setATTACCO(attacco){
+        this.attacco = attacco;
+        this.inputATTACCO.value = attacco;
+    }
+
+    getATTACCO(){
+        return this.attacco
+    }
+
+    setATTACCHI(attacchi){
+        this.attacchi = attacchi;
         this.inputATTACCHI.value = attacchi;
     }
 
-    setATTACCHI(){
-        return this.inputATTACCHI.value;
+    getATTACCHI(){
+        return this.attacchi
     }
 
-    getMORALE(morale){
+    setMORALE(morale){
+        this.morale = morale;
         this.inputMORALE.value = morale;
     }
 
-    setMORALE(){
-        return this.inputMORALE.value;
+    getMORALE(){
+        return this.morale;
     }
 
+    setTRUPPE(truppe){
+        this.truppe = truppe;
+        this.inputTRUPPE.value = truppe;
+    }
 
 }
 
@@ -97,38 +146,57 @@ class Codice{
 
     constructor(){
         this.buttonRissa = document.getElementById("buttonRissa");
-        this.buttonRissa.addEventListener("click", () => this.onButtonClick());
+        this.buttonRissa.addEventListener("click", () => this.onButtonRissaClick());
+
+        this.buttonMorale = document.getElementById("buttonMorale");
+        this.buttonMorale.addEventListener("click", () => this.onButtonMoraleClick());
+
+        this.modificatoreMorale1 = document.getElementById("modificatoreMorale1");
+        this.modificatoreMorale2 = document.getElementById("modificatoreMorale2");
+
+        this.boxRisultato = document.getElementById("boxRisultato");
+
+        this.vincitoreScontro = 0;
+
         this.truppa1 = new Truppa(1);
         this.truppa2 = new Truppa(2);
     }
 
-    onButtonClick(){
+    onButtonRissaClick(){
         console.log("pulsnte cliccato");
         this.stampareInput(this.truppa1);
         this.stampareInput(this.truppa2);
+        
         this.truppa1.aggiornareMorale();
         this.truppa2.aggiornareMorale();
+
+        this.modificatoreMorale1.textContent = this.truppa1.moraleRimasto;
+        this.modificatoreMorale2.textContent = this.truppa2.moraleRimasto;
+
         this.modificatoreAttacco1 = document.getElementById("modificatoreAttacco1");
         this.modificatoreDifesa1 = document.getElementById("modificatoreDifesa1");
-        
         this.modificatoreAttacco2 = document.getElementById("modificatoreAttacco2");
         this.modificatoreDifesa2 = document.getElementById("modificatoreDifesa2");
 
-        this.modificatoreAttacco1.textContent = this.truppa1.inputATTACCO.value;
-        this.modificatoreDifesa1.textContent = this.truppa2.inputDIFESA.value;
+        this.modificatoreAttacco1.textContent = this.truppa1.attacco;
+        this.modificatoreDifesa1.textContent = this.truppa2.difesa;
+        this.modificatoreAttacco2.textContent = this.truppa2.attacco;
+        this.modificatoreDifesa2.textContent = this.truppa1.difesa;
 
-        this.modificatoreAttacco2.textContent = this.truppa2.inputATTACCO.value;
-        this.modificatoreDifesa2.textContent = this.truppa1.inputDIFESA.value;
+        this.attacco1 = this.truppa1.attacco;
+        this.difesa1 = this.truppa1.difesa;
+        this.attacco2 = this.truppa2.attacco;
+        this.difesa2 = this.truppa2.difesa;
  
         this.tiriAttacco1 = [];
         this.tiriDifesa1 = [];
         this.tiriAttacco2 = [];
         this.tiriDifesa2 = [];
 
-        this.lanciaDadi((Number(this.truppa1.inputTRUPPE.value)*Number(this.truppa1.inputATTACCHI.value)), "attacco1");
-        this.lanciaDadi((Number(this.truppa1.inputTRUPPE.value)*Number(this.truppa1.inputATTACCHI.value)), "difesa1");
-        this.lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "attacco2");
-        this.lanciaDadi((Number(this.truppa2.inputTRUPPE.value)*Number(this.truppa2.inputATTACCHI.value)), "difesa2");
+        this.lanciaDadi(this.truppa1.truppe*this.truppa1.attacchi, "attacco1");
+        this.lanciaDadi(this.truppa1.truppe*this.truppa1.attacchi, "difesa1");
+        this.lanciaDadi(this.truppa2.truppe*this.truppa2.attacchi, "attacco2");
+        this.lanciaDadi(this.truppa2.truppe*this.truppa2.attacchi, "difesa2");
 
         console.log(this.tiriAttacco1);
         console.log(this.tiriDifesa1);
@@ -136,51 +204,101 @@ class Codice{
         console.log(this.tiriDifesa2);
 
 
-        // ASPETTA 1.5 SECONDI (1500ms) PRIMA DI CALCOLARE I DANNI
+        // ASPETTA 2.5 SECONDI (2500ms) PRIMA DI CALCOLARE I DANNI
         setTimeout(() => {
             console.log("--- INIZIO CALCOLO DANNI ---");
-            this.calcolareDanni(this.tiriAttacco1, this.tiriDifesa2, Number(this.truppa1.inputDANNO.value), this.truppa2);
-            this.calcolareDanni(this.tiriAttacco2, this.tiriDifesa1, Number(this.truppa2.inputDANNO.value), this.truppa1);
+            this.danniInflitti1 = this.calcolareDanni(this.tiriAttacco1, this.tiriDifesa1, this.truppa1.danno, this.truppa2);
+            this.danniInflitti2 = this.calcolareDanni(this.tiriAttacco2, this.tiriDifesa2, this.truppa2.danno, this.truppa1);
             
             // Aggiorna anche il morale alla fine
             this.truppa1.aggiornareMorale();
             this.truppa2.aggiornareMorale();
-        }, 1500);
+
+            this.modificatoreMorale1.textContent = this.truppa1.moraleRimasto;
+            this.modificatoreMorale2.textContent = this.truppa2.moraleRimasto;
+
+            this.modificatoreMorale1.style.visibility = "hidden";
+            this.modificatoreMorale2.style.visibility = "hidden";
+
+            if(this.danniInflitti1 > this.danniInflitti2){
+                this.vincitoreScontro = 1;
+
+                this.modificatoreMorale1.style.visibility = "hidden";
+                this.modificatoreMorale2.style.visibility = "visible";
+            }else if(this.danniInflitti2 > this.danniInflitti1){
+                this.vincitoreScontro = 2;
+
+                this.modificatoreMorale1.style.visibility = "visible";
+                this.modificatoreMorale2.style.visibility = "hidden";
+            }else{
+                this.vincitoreScontro = 0;
+
+                this.modificatoreMorale1.style.visibility = "hidden";
+                this.modificatoreMorale2.style.visibility = "hidden";
+            }
+
+            this.scrivereCose(this.vincitoreScontro, this.danniInflitti1, this.danniInflitti2);
+        }, 2500);
+
+    }
+
+    scrivereCose(vincitoreScontro, danni1, danni2){
+        this.testoDaScrivere = "1 ha inflitto: " + danni1 + " danni | 2 ha inflitto: " + danni2 + " danni";
+        if(vincitoreScontro == 0){
+            this.testoDaScrivere += " | pareggio";
+        }else if(vincitoreScontro == 1){
+            this.testoDaScrivere += " | vince 1-->2 tira per il morale";
+        }else if(vincitoreScontro == 2){
+            this.testoDaScrivere += " | vince 2-->1 tira per il morale";
+        }
+
+        this.boxRisultato.innerText = this.testoDaScrivere;
+    }
+
+    onButtonMoraleClick(){
 
     }
 
     calcolareDanni(attacco, difesa, danno, bersaglio){
-        //let danniInflitti = 0;
-           for(let i=0; i<attacco.length; i++){
+        let danniInflitti = 0;
+        for(let i=0; i<attacco.length; i++){
             if(attacco[i]>difesa[i]){
-                //danniInflitti += danno;
-                let valoreTemporaneo1 = bersaglio.vitaPrimaUnita - danno;
-                bersaglio.vitaPrimaUnita = valoreTemporaneo1;
+
+                if(danno >= bersaglio.vitaPrimaUnita){
+                    danniInflitti += bersaglio.vitaPrimaUnita;
+                }else{
+                    danniInflitti += danno;
+                }
+
+                bersaglio.vitaPrimaUnita -= danno;
+
                 if(bersaglio.vitaPrimaUnita <= 0){
-                    let truppeRimaste = Number(bersaglio.inputTRUPPE.value) -1 ;
-                    bersaglio.inputTRUPPE.value = truppeRimaste;
-                    bersaglio.vitaPrimaUnita = Number(bersaglio.inputHP.value);
+                    let truppeRimaste = bersaglio.truppe-1;
+                    if( truppeRimaste >= 0){
+                        bersaglio.setTRUPPE(truppeRimaste);
+                    }
+                    bersaglio.vitaPrimaUnita = bersaglio.hp;//sennò vitaPrimaUnita non rimane il valore che aveva prima di morire
                 }
             }
         }
-        //return danniInflitti;
+        return danniInflitti;
     }
 
     aggiornareListeDadi(risultatoDado, tipoDadi){
         if(tipoDadi == "attacco1"){
-            this.tiriAttacco1.push(risultatoDado+Number(this.modificatoreAttacco1.textContent));
+            this.tiriAttacco1.push(risultatoDado+this.attacco1);
             this.tiriAttacco1 = this.ordinareListeBoubleSort(this.tiriAttacco1);
 
         }else if(tipoDadi == "difesa1"){
-            this.tiriDifesa1.push(risultatoDado+Number(this.modificatoreDifesa2.textContent));
+            this.tiriDifesa1.push(risultatoDado+this.difesa2);
             this.tiriDifesa1 = this.ordinareListeBoubleSort(this.tiriDifesa1);
 
         }else if(tipoDadi == "attacco2"){
-            this.tiriAttacco2.push(risultatoDado+Number(this.modificatoreAttacco2.textContent));
+            this.tiriAttacco2.push(risultatoDado+this.attacco2);
             this.tiriAttacco2 = this.ordinareListeBoubleSort(this.tiriAttacco2);
 
         }else if(tipoDadi == "difesa2"){
-            this.tiriDifesa2.push(risultatoDado+Number(this.modificatoreDifesa1.textContent));
+            this.tiriDifesa2.push(risultatoDado+this.difesa1);
             this.tiriDifesa2 = this.ordinareListeBoubleSort(this.tiriDifesa2);
 
         }
@@ -208,7 +326,7 @@ class Codice{
     //DADI
     lanciaDadi(numeroDadi, tipoDadi) {
         let durataAnimazione = 1000;
-        let durataVisibile = 2000;
+        //let durataVisibile = 90000;    (non voglio più che i dadi scompaiano)
         
         let contenitoreDadi;
 
@@ -258,11 +376,12 @@ class Codice{
                 this.aggiornareListeDadi(Number(dado.textContent), tipoDadi);
             });
 
-            // 4. Scomparsa dopo Y ms
-            setTimeout(() => {
+            // 4. Scomparsa dopo Y ms (tolta perché non voglio più che scompaiano)
+            /*setTimeout(() => {
                 const vecchiDadi = contenitoreDadi.querySelectorAll('.dadoAttacco, .dadoDifesa');/*prendi tutti i dadi vecchi*/
-                vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
-            }, durataVisibile); // quando scatta questo tempo-->i si fa il "setTimeout()"-->i dadi vengono cancellati
+            /*    vecchiDadi.forEach(d => d.remove());/*cancella tutti i dadi vecchi*/
+            /*}, durataVisibile); // quando scatta questo tempo-->i si fa il "setTimeout()"-->i dadi vengono cancellati
+            */
 
         }, durataAnimazione);// quando scatta questo tempo-->i si fa il "setTimeout()"-->ferma l'animazione
     }

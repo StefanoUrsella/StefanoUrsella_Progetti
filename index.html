@@ -55,11 +55,6 @@
     <p class="paragrafo">VITA COMPLESSIVA</p>
     <p class="paragrafo" id="vitaComplessiva2"></p>
 
-    //RISSA
-    <button class="buttonRissa" id="buttonRissa">RISSA</button>
-    <script src="codice.js"></script>
-
-
     //DADI
     <div id="gruppoCombattimenti">
         <div class="zonaLancio">
@@ -79,7 +74,24 @@
                 <p class="etichetta-testoD" id="modificatoreDifesa2">0</p>
             </div>
         </div>
+
+        <div class="zonaMorale">
+            <div id="contenitoreDadiMorale" class="contenitoreDadiMorale">
+                <p class="etichetta-testoS" id="modificatoreMorale1">0</p>
+                <p class="etichetta-testoD" id="modificatoreMorale2">0</p>
+            </div>
+        </div>
+
+        <div class="zonaComandi">
+            <button class="buttonRissa" id="buttonRissa">RISSA</button>
+            <button class="buttonMorale" id="buttonMorale">MORALE</button>
+        </div>
+
+        <div id="boxRisultato" class="boxRisultato"></div>
+        
     </div>
+
+    <script src="codice.js"></script>
     
 </body>
 </html>

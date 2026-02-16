@@ -16,6 +16,12 @@ body{
     padding: 10px;
 }
 
+.buttonMorale{
+    background-color: rgb(4, 255, 0);
+    color: black;
+    padding: 10px;
+}
+
 .paragrafo{
     color: white;
 }
@@ -28,21 +34,47 @@ body{
 
 
 #gruppoCombattimenti {
-    position: fixed;
-    top: 200px;/*altezza del blocco*/
+    position: absolute;/*così non segue lo schermo se scrollo in alto o in basso*/
+    top: 100px;/*altezza del blocco*/
     left: 50%;/*posizione a metà schermo orizzontale*/
     transform: translateX(-50%);
     z-index: 10000;/*così è sopra a tutto e nulla lo copre*/
 
-    display: flex;/*affianca le zone di lancio*/
-    gap: 100px;/*distanza tra le zone di lancio*/
+    display: grid;
+    grid-template-columns: 1fr 1fr;/*due colonne*/
+    justify-items: center;/*le robe di allineano al centro*/
+    column-gap: 50px;/*distanza orizzontale*/
+    row-gap: 0px;/*distanza verticale, è solo 0px perché sennò TUTTO sarebbe distanziato di 50px, io non lo voglio quindi lo metto manualmente per ogni coso*/
 }
 
-.zonaLancio {    
+/*Il 3°(.zonaMorale), il 4°(.zonaComandi) e il 5°(.boxRisultato) elemento di "#gruppoCombattimenti"-->occupano una larghezza 2 nella griglia*/
+#gruppoCombattimenti > :nth-child(3),
+#gruppoCombattimenti > :nth-child(4),
+#gruppoCombattimenti > :nth-child(5){
+    grid-column: span 2;
+}
+
+.zonaLancio {
     display: flex;
-    flex-direction: column;/*mette i contenitori uno sotto l'altro*/
+    flex-direction: column;/*così li impila invece che affiancarli*/
     align-items: center;/*allinea i contenitori al centro*/
     gap: 20px;/*spaizo tra il contenitore attacco e difesa*/
+    margin-top: 50px;/*distanza sopra, compensa per il "0px" del "#gruppoCombattimenti"*/
+}
+
+.zonaMorale{
+    display: flex;
+    flex-direction: column;/*così li impila invece che affiancarli*/
+    align-items: center;/*allinea i contenitori al centro*/
+    margin-top: 20px;/*distanza dai cosi dei lanci*/
+}
+
+.zonaComandi{
+    display: flex;
+    /*flex-direction: column;/*così li impila invece che affiancarli*/
+    align-items: center;/*allinea i contenitori al centro*/
+    gap: 5px;/*spaizo tra i vari pulsanti e campi*/
+    margin-top: 10px;/*distanza dal Morale*/
 }
 
 .contenitoreDadiAttacco {
@@ -111,7 +143,36 @@ body{
     font-weight: bold;
 }
 
+.contenitoreDadiMorale {
+    position: relative;
+    
+    display: flex;/*così si affiancano invece che sovrapporsi*/
+    flex-wrap: wrap;/*va a capo se esce dalla width*/
+    width: 350px;/*larghezza dopo la quale va a capo*/
+    justify-content: center;/*quando va a capo-->si allinea al centro*/
 
+    gap: 10px;/*spazio tra un dado e l'altro*/
+
+    background-color: rgba(39, 244, 7, 0.299);/*sfondo per contenere i dadi*/
+    border: 3px solid rgba(75, 214, 11, 0.856);/*Contorno del Rettangolo*/
+    border-radius: 15px;/*per arrotondare gli angoli*/
+    padding: 20px;/*spazio tra i dadi e il bordo del rettangolo*/
+    box-shadow: 0 0 15px rgba(124, 250, 78, 0.5); /*effetto "balgiore/ombra" esterno*/
+    min-height: 80px;/*altezza minima del rettangolo se non ci sono dadi dentro*/
+}
+
+.dadoMorale {
+    width: 60px;
+    height: 60px;
+    background: rgb(6, 208, 9);
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
 
 /* Stile comune per le etichette che sporgono */
 /*per quelle a sinistra*/
@@ -154,7 +215,7 @@ body{
 
 
 /* Colore specifico per l'etichetta Attacco Sinistra */
-.contenitoreDadiAttacco .etichetta-testoS {
+.contenitoreDadiAttacco .etichetta-testoS {/*vuol dire che questo si applica su ".etichetta-testoS" --> SOLO se è dentro a ".contenitoreDadiAttacco"*/
     background-color: rgb(138, 0, 0);
     border: 2px solid red;
     border-right: none;
@@ -181,8 +242,46 @@ body{
     border-left: none;
 }
 
+/*Colore specifico per l'etichetta Morale Sinistra*/
+.contenitoreDadiMorale .etichetta-testoS{
+    background-color: rgb(40, 140, 15);
+    border: 2px solid rgba(43, 255, 0, 0.616);
+    visibility: hidden;
+}
+
+/*Colore specifico per l'etichetta Morale Destra*/
+.contenitoreDadiMorale .etichetta-testoD{
+    background-color: rgb(40, 140, 15);
+    border: 2px solid rgba(43, 255, 0, 0.616);
+    visibility: hidden;
+}
+
 /* Assicuriamoci che i contenitori abbiano overflow visibile */
-.contenitoreDadiAttacco, .contenitoreDadiDifesa {
+.contenitoreDadiAttacco, .contenitoreDadiDifesa, .contenitoreDadiMorale {/*se c'è la virgola in mezzo-->è una cosa che fa a tutti, non è più la roba del "solo se è figlio di..."*/
     position: relative; /* Indispensabile per posizionare l'etichetta rispetto al box */
     overflow: visible;  /* Permette alla linguetta di "uscire" dai bordi */
+}
+
+/*coso che contiene i testi per avvirare gli utenti*/
+.boxRisultato {
+    width: 300px;/*Larghezza*/
+    min-height: 40px;/*Altezza minima (si allunga se c'è tanto testo)*/
+    
+    background-color: white;
+    color: black;
+    
+    border: 2px solid black;/*bordo nero*/
+    border-radius: 10px;/*angoli arrotondati*/
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);/*Omra luminosa*/
+
+    font-weight: bold;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+
+    margin-top: 10px;/*distanza dalla ".zonaComandi"*/
+    display: flex;/*per gestire le varie robe per l'allineamento*/
+    justify-content: center;/*Centra Orizzontalmente il testo all'interno*/
+    align-items: center;/*Centra Verticalmente il testo all'interno*/
+    text-align: center;/*far andare il testo a capo*/
+    padding: 10px;/*distanza tra borrdi e testo*/
 }
