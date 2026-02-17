@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @StefanoUrsella
-- 👀 I’m interested in WAR CRIMES
-- 🌱 I’m currently learning HOW TO COMMIT COME WAR CRIMES
+- 👀 I’m interested in ...
+- 🌱 I’m currently learning ...
 - 💞️ I’m looking to collaborate on EXPANDING THE "GENEVA CHECKLIST"
 - 📫 How to reach me COME AND FIND ME
 - 😄 Pronouns: C R O I S S A N T
