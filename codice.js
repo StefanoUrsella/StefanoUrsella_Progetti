@@ -55,10 +55,10 @@ class Truppa{
         this.inputTRUPPE.value = this.truppe;
         this.displayMORALERIMASTO.textContent = this.moraleRimasto;
 
-        // 1. Inizializziamo la vita attuale al valore dell'input (appena carica la pagina)
+        //Inizializzar l'HP quando si carica la pagina
         this.vitaPrimaUnita = this.hp;
 
-        // 2. AGGIUNGIAMO QUESTO: Se l'utente cambia manualmente l'input HP, resettiamo la vita
+        //Quando l'utente cambia HP, si aggiorna
         this.inputHP.addEventListener("change", (e) => {
             this.hp = Number(e.target.value);
             this.vitaPrimaUnita = this.hp;
@@ -204,7 +204,7 @@ class Codice{
         console.log(this.tiriDifesa2);
 
 
-        // ASPETTA 2.5 SECONDI (2500ms) PRIMA DI CALCOLARE I DANNI
+        //aspettare 2.5 secondi prima di calcolare i danni
         setTimeout(() => {
             console.log("--- INIZIO CALCOLO DANNI ---");
             this.danniInflitti1 = this.calcolareDanni(this.tiriAttacco1, this.tiriDifesa1, this.truppa1.danno, this.truppa2);
@@ -381,7 +381,7 @@ class Codice{
 
         const dadi = [];
 
-        // 1. Creazione dei dadi
+        //creazione dadi
         for (let i = 0; i < numeroDadi; i++) {
             const dado = document.createElement("div"); //"dado" è un nuovo elemento "generico" (è un "div")
             if(tipoDadi == "attacco1" || tipoDadi == "attacco2"){
@@ -395,14 +395,14 @@ class Codice{
             dadi.push(dado);//aggiungo i "dado" alla lista di "dadi"
         }
 
-        // 2. Animazione casuale veloce
+        //animazione dadi
         const intervalli = dadi.map(dado => {//"intervalli" contiene tutti i "setInterval" di ogni dado             //"map" esegue un metodo su tutti gli elementi di un array
             return setInterval(() => {//"setInterval" esegue una funzione ogni TOT tempo
                 dado.textContent = Math.floor(Math.random() * 6) + 1;
             }, 50); //"50" è la velocità con cui viene iterato "setInterval"
         });
 
-        // 3. Stop animazione dopo X ms
+        //fermare animazioni dopo TOT tempo
         setTimeout(() => {
             intervalli.forEach(interval => clearInterval(interval));// passa ogni "interval" (ID per i dadi) contenuto in "intervalli"-->lo passa a "clearInterval"-->cancella il timer
 
@@ -434,7 +434,7 @@ class Codice{
 
         const dadi = [];
 
-        // 1. Creazione dei dadi
+        //creazione dadi
         const dado = document.createElement("div"); //"dado" è un nuovo elemento "generico" (è un "div")
         dado.classList.add("dadoMorale"); //li dico che classe CSS deve usare il dado
         
@@ -442,14 +442,14 @@ class Codice{
         contenitoreDadi.appendChild(dado);
         dadi.push(dado);//aggiungo i "dado" alla lista di "dadi"
 
-        // 2. Animazione casuale veloce
+        //animazione dadi
         const intervalli = dadi.map(dado => {//"intervalli" contiene tutti i "setInterval" di ogni dado             //"map" esegue un metodo su tutti gli elementi di un array
             return setInterval(() => {//"setInterval" esegue una funzione ogni TOT tempo
                 dado.textContent = Math.floor(Math.random() * 10) + 1;
             }, 50); //"50" è la velocità con cui viene iterato "setInterval"
         });
 
-        // 3. Stop animazione dopo X ms
+        //fermare animazione dopo TOT tempo
         setTimeout(() => {
             intervalli.forEach(interval => clearInterval(interval));// passa ogni "interval" (ID per i dadi) contenuto in "intervalli"-->lo passa a "clearInterval"-->cancella il timer
 
